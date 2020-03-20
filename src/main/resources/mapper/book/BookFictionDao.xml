@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.book.dao.BookFictionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.book.entity.BookFictionEntity" id="bookFictionMap">
+        <result property="fictionId" column="fiction_id"/>
+        <result property="fictionName" column="fiction_name"/>
+        <result property="autor" column="autor"/>
+        <result property="type" column="type"/>
+        <result property="state" column="state"/>
+        <result property="newest" column="newest"/>
+        <result property="number" column="number"/>
+        <result property="brief" column="brief"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+</mapper>
