@@ -26,4 +26,9 @@ public class BookFictionSourceServiceImpl extends ServiceImpl<BookFictionSourceD
         return new PageUtils(page);
     }
 
+    @Override
+    public void updateByIdUpdate(BookFictionSourceEntity fictionSourceEntity) {
+        baseMapper.updateByIdUpdate(fictionSourceEntity);
+    }
+
 }

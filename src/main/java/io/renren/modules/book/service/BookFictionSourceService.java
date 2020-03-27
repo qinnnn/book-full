@@ -16,5 +16,11 @@ import java.util.Map;
 public interface BookFictionSourceService extends IService<BookFictionSourceEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 更新小说最新章节
+     * @param fictionSourceEntity
+     */
+    void updateByIdUpdate(BookFictionSourceEntity fictionSourceEntity);
 }
 

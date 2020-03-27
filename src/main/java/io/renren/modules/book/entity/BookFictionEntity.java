@@ -1,6 +1,7 @@
 package io.renren.modules.book.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -65,8 +66,37 @@ public class BookFictionEntity implements Serializable {
 	 */
 	private String sourceName;
 	/**
+	 * 源是否可被修改
+	 */
+	private Integer sourceState;
+	/**
+	 * 更新时间
+	 */
+	private Date updateTime;
+	/**
 	 * 创建时间
 	 */
 	private Date createTime;
+	/**
+	 * 备注
+	 */
+	private String remark;
+	/**
+	 * 是否删除  -1：已删除  0：正常
+	 */
+	@TableLogic
+	private Integer delFlag;
 
+
+	public BookFictionEntity(String fictionName,String author,String type, Integer states, String newest, Integer number, String brief, String img) {
+		this.fictionName = fictionName;
+		this.createTime = new Date();
+		this.autor = author;
+		this.type = type;
+		this.imgUrl = img;
+		this.newest = newest;
+		this.state = states;
+		this.brief = brief;
+		this.number = number;
+	}
 }

@@ -5170,7 +5170,7 @@ function joinUrl(base, rel) {
   }
   var result = splitUrl(base);
   if (relsp.path === undefined) {
-    // change only fragment part
+    // resources only fragment part
     result.fragment = relsp.fragment;
   } else if (relsp.path.slice(0, 1) === '/') {
     // relative to domain
@@ -20917,7 +20917,7 @@ Request.prototype.end = function(fn){
   // store callback
   this._callback = fn || noop;
 
-  // state change
+  // state resources
   xhr.onreadystatechange = function(){
     if (4 != xhr.readyState) return;
 

@@ -12,5 +12,8 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
+    <update id="updateByIdUpdate" parameterType="io.renren.modules.book.entity.BookFictionSourceEntity">
+        UPDATE `book_fiction_source` SET `newest`=#{newest}, `number`=#{number}, `update_time`=#{updateTime} WHERE (`fiction_id`=#{fictionId}) AND (`source_id`=#{sourceId});
+    </update>
 
 </mapper>

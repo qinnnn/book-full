@@ -3,6 +3,7 @@ package io.renren.modules.book.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.reptile.resources.ShuQuGeResources;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,8 @@ import io.renren.common.utils.R;
 public class BookSourceController {
     @Autowired
     private BookSourceService bookSourceService;
+    @Autowired
+    private ShuQuGeResources shuQuGeResources;
 
     /**
      * 列表
@@ -84,6 +87,21 @@ public class BookSourceController {
     public R delete(@RequestBody Long[] sourceIds){
 		bookSourceService.removeByIds(Arrays.asList(sourceIds));
 
+        return R.ok();
+    }
+
+    /**
+     * 数据源爬取小说列表
+     */
+    @RequestMapping("/crawl")
+    @RequiresPermissions("book:booksource:save")
+    public R crawl(@PathVariable("sourceId") Long sourceId){
+        BookSourceEntity bookSource = bookSourceService.getById(sourceId);
+        switch (bookSource.getSourceName()){
+            case "书趣阁":
+                shuQuGeResources.crawl(bookSource);
+                break;
+        }
         return R.ok();
     }
 

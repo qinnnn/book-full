@@ -13,5 +13,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BookFictionSourceDao extends BaseMapper<BookFictionSourceEntity> {
-	
+
+    /**
+     * 更新小说最新章节
+     * @param fictionSourceEntity
+     */
+	void updateByIdUpdate(BookFictionSourceEntity fictionSourceEntity);
 }

@@ -1,6 +1,7 @@
 package io.renren.modules.book.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -41,6 +42,14 @@ public class BookUserFictionEntity implements Serializable {
 	 */
 	private Date useTime;
 	/**
+	 * 当前阅读的章节
+	 */
+	private Integer useEst;
+	/**
+	 * 当前章节的页数
+	 */
+	private Integer usePage;
+	/**
 	 * 数据源id
 	 */
 	private Long sourceId;
@@ -53,8 +62,9 @@ public class BookUserFictionEntity implements Serializable {
 	 */
 	private Date createTime;
 	/**
-	 * 是否删除 0非 1是
+	 * 是否删除  -1：已删除  0：正常
 	 */
-	private Integer isDel;
+	@TableLogic
+	private Integer delFlag;
 
 }

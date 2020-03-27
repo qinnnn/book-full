@@ -3,6 +3,7 @@ package io.renren.modules.book.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.reptile.resources.ShuQuGeResources;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,8 @@ import io.renren.common.utils.R;
 public class BookFictionController {
     @Autowired
     private BookFictionService bookFictionService;
+    @Autowired
+    private ShuQuGeResources shuQuGeResources;
 
     /**
      * 列表
@@ -37,6 +40,7 @@ public class BookFictionController {
     @RequestMapping("/list")
     @RequiresPermissions("book:bookfiction:list")
     public R list(@RequestParam Map<String, Object> params){
+        shuQuGeResources.getCatalog("http://www.shuquge.com/txt/5809/index.html");
         PageUtils page = bookFictionService.queryPage(params);
 
         return R.ok().put("page", page);

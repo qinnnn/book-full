@@ -22,16 +22,31 @@ public class BookFictionSourceEntity implements Serializable {
 	/**
 	 * 小说id
 	 */
-	@TableId
 	private Long fictionId;
 	/**
 	 * 源id
 	 */
 	private Long sourceId;
 	/**
+	 * 源名称
+	 */
+	private String sourceName;
+	/**
 	 * 最新章节
 	 */
 	private String newest;
+	/**
+	 * 状态 1 连载中 2 已完结
+	 */
+	private Integer state;
+	/**
+	 * 源地址
+	 */
+	private String url;
+	/**
+	 * 源的字数
+	 */
+	private Integer number;
 	/**
 	 * 更新时间
 	 */
