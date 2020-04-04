@@ -108,8 +108,8 @@ public class JsoupUtil {
             } catch (IOException e) {
                 // TODO 自动生成的 catch 块
 //                e.printStackTrace();
-                log.info("链接超时并开始重新连接");
-                flag = true;
+                log.info("链接超时并关闭:"+url);
+                flag = false;
             }
         } while (flag);
         return document;

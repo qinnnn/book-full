@@ -7,6 +7,7 @@ import io.renren.modules.book.entity.BookFictionSourceEntity;
 import io.renren.modules.book.entity.BookSourceEntity;
 import io.renren.modules.book.service.BookFictionService;
 import io.renren.modules.book.service.BookFictionSourceService;
+import io.renren.modules.book.service.BookSourceService;
 import io.renren.modules.reptile.change.CatalogChange;
 import io.renren.modules.reptile.utils.JsoupUtil;
 import org.jsoup.nodes.Document;
@@ -35,6 +36,8 @@ public class ShuQuGeResources {
     private BookFictionService bookFictionService;
     @Autowired
     private BookFictionSourceService bookFictionSourceService;
+    @Autowired
+    private BookSourceService bookSourceService;
 
     /**
      *  获取小说目录
@@ -67,19 +70,34 @@ public class ShuQuGeResources {
      *  书趣阁爬取小说
      */
     @Async
-    @Transactional(rollbackFor = RuntimeException.class)
-    public void crawl(BookSourceEntity bookSourceEntity) {
+//    @Transactional(rollbackFor = RuntimeException.class)
+    public void crawl(BookSourceEntity bookSourceEntity) throws InterruptedException {
         JSONObject dataObject = JSONObject.parseObject(bookSourceEntity.getDateValue());
+        log.info("书趣阁---爬取小说信息");
+        Integer number = bookSourceEntity.getNumber();
+        Boolean state = true;
+        while (state){
+            number++;
+            state = addFiction("http://www.shuquge.com/txt/"+number+"/index.html",bookSourceEntity.getSourceName(),bookSourceEntity.getSourceId());
+            if(state){
+                bookSourceEntity.setNumber(number);
+                bookSourceService.updateById(bookSourceEntity);
+            }
+            Thread.sleep(300);
+        }
+        log.info("书趣阁---获取小说信息完成");
     }
 
     /**
      *  小说查询如果没有则入库，如果有则添加源
      */
-    @Async
+//    @Async
     @Transactional(rollbackFor = RuntimeException.class)
-    public void addFiction(String fictionURL,String sourceName,Long sourceId) {
-        log.info("书趣阁---获取小说信息");
+    public Boolean addFiction(String fictionURL,String sourceName,Long sourceId) {
         Document doc = jsoupUtil.getDoc(fictionURL);
+        if(doc==null){
+            return false;
+        }
         BookFictionEntity bookFictionEntity = getFictions(doc);
         if(bookFictionEntity!=null){
             BookFictionEntity bfe = bookFictionService.getOne(new QueryWrapper<BookFictionEntity>().eq("fiction_name",bookFictionEntity.getFictionName()).last("limit 1"));
@@ -101,6 +119,7 @@ public class ShuQuGeResources {
                 bookFictionSourceEntity.setUpdateTime(new Date());
                 bookFictionSourceEntity.setCreateTime(new Date());
                 bookFictionSourceService.save(bookFictionSourceEntity);
+                log.info("书趣阁---成功获取小说:"+bookFictionEntity.getFictionName()+"地址:"+fictionURL);
             }else{ //已有此小说
                 BookFictionSourceEntity bookFictionSourceEntity = bookFictionSourceService.getOne(new QueryWrapper<BookFictionSourceEntity>().eq("fiction_id",bfe.getFictionId()).eq("source_id",sourceId).last("limit 1"));
                 if(bookFictionSourceEntity==null){ //无绑定此源才创建书的源
@@ -115,11 +134,13 @@ public class ShuQuGeResources {
                     bookFictionSourceEntity.setUpdateTime(new Date());
                     bookFictionSourceEntity.setCreateTime(new Date());
                     bookFictionSourceService.save(bookFictionSourceEntity);
+                    log.info("书趣阁---成功添加小说源:"+bookFictionEntity.getFictionName()+"地址:"+fictionURL);
                 }
             }
-            log.info("书趣阁---获取小说信息完成");
+            return true;
         }else{
-            log.info("书趣阁---获取小说信息失败-地址错误");
+            log.info("书趣阁---获取小说信息失败-地址错误:"+fictionURL);
+            return false;
         }
     }
 

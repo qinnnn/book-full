@@ -93,9 +93,9 @@ public class BookSourceController {
     /**
      * 数据源爬取小说列表
      */
-    @RequestMapping("/crawl")
+    @RequestMapping("/crawl/{sourceId}")
     @RequiresPermissions("book:booksource:save")
-    public R crawl(@PathVariable("sourceId") Long sourceId){
+    public R crawl(@PathVariable("sourceId") Long sourceId) throws InterruptedException {
         BookSourceEntity bookSource = bookSourceService.getById(sourceId);
         switch (bookSource.getSourceName()){
             case "书趣阁":
